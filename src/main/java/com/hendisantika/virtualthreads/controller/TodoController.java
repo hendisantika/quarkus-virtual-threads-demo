@@ -85,9 +85,19 @@ public class TodoController {
         log();
         Todo entity = Todo.findById(id);
         if (entity == null) {
-            throw new WebApplicationException("Todo with id of " + id + " does not exist.", Status.NOT_FOUND);
+            throw new WebApplicationException("Todo with id of " + id + " does not exist.", Response.Status.NOT_FOUND);
         }
         entity.delete();
         return Response.noContent().build();
+    }
+
+    private void pinTheCarrierThread() {
+        synchronized (this) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException ignored) {
+                // For testing purpose only.
+            }
+        }
     }
 }
