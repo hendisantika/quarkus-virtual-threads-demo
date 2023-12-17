@@ -4,10 +4,9 @@ import com.hendisantika.virtualthreads.entity.Todo;
 import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Sort;
 import io.smallrye.common.annotation.RunOnVirtualThread;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.WebApplicationException;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
@@ -46,5 +45,13 @@ public class TodoController {
             throw new WebApplicationException("Todo with id of " + id + " does not exist.", Response.Status.NOT_FOUND);
         }
         return entity;
+    }
+
+    @POST
+    @Transactional
+    public Response create(@Valid Todo item) {
+        log();
+        item.persist();
+        return Response.status(Response.Status.CREATED).entity(item).build();
     }
 }
