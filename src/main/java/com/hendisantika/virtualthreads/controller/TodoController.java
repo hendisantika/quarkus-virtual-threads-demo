@@ -54,4 +54,19 @@ public class TodoController {
         item.persist();
         return Response.status(Response.Status.CREATED).entity(item).build();
     }
+
+
+    @PATCH
+    @Path("/{id}")
+    @Transactional
+    public Response update(@Valid Todo todo, @PathParam("id") Long id) {
+        log();
+        Todo entity = Todo.findById(id);
+        entity.id = id;
+        entity.completed = todo.completed;
+        entity.order = todo.order;
+        entity.title = todo.title;
+        entity.url = todo.url;
+        return Response.ok(entity).build();
+    }
 }
