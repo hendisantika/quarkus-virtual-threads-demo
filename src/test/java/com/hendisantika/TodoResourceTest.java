@@ -14,8 +14,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 import java.util.List;
 
-import static io.restassured.RestAssured.get;
-import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -115,4 +114,17 @@ public class TodoResourceTest {
         assertEquals(4, todos.size());
     }
 
+    @Test
+    @Order(5)
+    void testDeleteCompleted() {
+        delete("/api")
+                .then()
+                .statusCode(HttpStatus.SC_NO_CONTENT);
+
+        List<Todo> todos = get("/api").then()
+                .statusCode(HttpStatus.SC_OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .extract().body().as(getTodoTypeRef());
+        assertEquals(3, todos.size());
+    }
 }
