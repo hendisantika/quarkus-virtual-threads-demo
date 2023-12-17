@@ -4,6 +4,7 @@ import com.hendisantika.virtualthreads.entity.Todo;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit5.virtual.ShouldNotPin;
 import io.quarkus.test.junit5.virtual.VirtualThreadUnit;
+import io.restassured.common.mapper.TypeRef;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import org.apache.http.HttpStatus;
@@ -127,4 +128,11 @@ public class TodoResourceTest {
                 .extract().body().as(getTodoTypeRef());
         assertEquals(3, todos.size());
     }
+
+    private TypeRef<List<Todo>> getTodoTypeRef() {
+        return new TypeRef<List<Todo>>() {
+            // Kept empty on purpose
+        };
+    }
+
 }
