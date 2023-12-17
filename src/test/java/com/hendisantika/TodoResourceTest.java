@@ -74,4 +74,25 @@ public class TodoResourceTest {
                 .extract().body().as(getTodoTypeRef());
         assertEquals(5, todos.size());
     }
+
+    @Test
+    @Order(3)
+    void testUpdatingAnItem() {
+        Todo todo = new Todo();
+        todo.title = "testing the application (updated)";
+        todo.completed = true;
+        given()
+                .body(todo)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+                .pathParam("id", 5)
+                .when()
+                .patch("/api/{id}")
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body("title", is(todo.title))
+                .body("completed", is(true))
+                .body("id", is(5));
+    }
 }
