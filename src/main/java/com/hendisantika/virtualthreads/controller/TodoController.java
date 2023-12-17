@@ -6,6 +6,9 @@ import io.quarkus.panache.common.Sort;
 import io.smallrye.common.annotation.RunOnVirtualThread;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
@@ -34,4 +37,14 @@ public class TodoController {
         return Todo.listAll(Sort.by("order"));
     }
 
+    @GET
+    @Path("/{id}")
+    public Todo getOne(@PathParam("id") Long id) {
+        log();
+        Todo entity = Todo.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException("Todo with id of " + id + " does not exist.", Response.Status.NOT_FOUND);
+        }
+        return entity;
+    }
 }
