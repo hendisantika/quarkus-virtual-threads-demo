@@ -69,4 +69,12 @@ public class TodoController {
         entity.url = todo.url;
         return Response.ok(entity).build();
     }
+
+    @DELETE
+    @Transactional
+    public Response deleteCompleted() {
+        log();
+        Todo.deleteCompleted();
+        return Response.noContent().build();
+    }
 }
