@@ -95,4 +95,24 @@ public class TodoResourceTest {
                 .body("completed", is(true))
                 .body("id", is(5));
     }
+
+    @Test
+    @Order(4)
+    void testDeletingAnItem() {
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+                .pathParam("id", 5)
+                .when()
+                .delete("/api/{id}")
+                .then()
+                .statusCode(HttpStatus.SC_NO_CONTENT);
+
+        List<Todo> todos = get("/api").then()
+                .statusCode(HttpStatus.SC_OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .extract().body().as(getTodoTypeRef());
+        assertEquals(4, todos.size());
+    }
+
 }
