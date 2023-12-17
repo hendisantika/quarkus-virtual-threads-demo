@@ -77,4 +77,17 @@ public class TodoController {
         Todo.deleteCompleted();
         return Response.noContent().build();
     }
+
+    @DELETE
+    @Transactional
+    @Path("/{id}")
+    public Response deleteOne(@PathParam("id") Long id) {
+        log();
+        Todo entity = Todo.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException("Todo with id of " + id + " does not exist.", Status.NOT_FOUND);
+        }
+        entity.delete();
+        return Response.noContent().build();
+    }
 }
