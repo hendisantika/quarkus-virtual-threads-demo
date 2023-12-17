@@ -1,5 +1,6 @@
 package com.hendisantika.virtualthreads.controller;
 
+import io.quarkus.logging.Log;
 import io.smallrye.common.annotation.RunOnVirtualThread;
 import jakarta.ws.rs.Path;
 
@@ -17,4 +18,7 @@ import jakarta.ws.rs.Path;
 @Path("/api")
 @RunOnVirtualThread
 public class TodoController {
+    private void log() {
+        Log.infof("Called on %s", Thread.currentThread());
+    }
 }
